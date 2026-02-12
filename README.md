@@ -8,8 +8,6 @@
 
 a fully interactive magic 8 ball that only gives one answer: **yes**.
 
-because when your valentine is swapnika, the universe doesn't need to think twice.
-
 shake the ball. get a telugu meme. get emotionally attacked. say yes. repeat.
 
 ### features (because every side project needs a features section)
