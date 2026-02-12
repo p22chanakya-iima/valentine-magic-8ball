@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will You Be My Valentine? - Magic 8 Ball of Love</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #ffb6c1, #ff6b81, #e84393, #fd79a8);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease infinite;
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' style='font-size:20px'><text y='18'>%E2%9D%A4%EF%B8%8F</text></svg>"), auto;
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Floating hearts */
+  .hearts-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .floating-heart {
+    position: absolute;
+    bottom: -50px;
+    opacity: 0;
+    animation: floatUp linear infinite;
+    font-size: 20px;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0; }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.3; }
+    100% { transform: translateY(-110vh) rotate(720deg) scale(0.5); opacity: 0; }
+  }
+
+  /* Sparkle cursor trail */
+  .sparkle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    font-size: 14px;
+    animation: sparkleFade 0.8s ease-out forwards;
+  }
+
+  @keyframes sparkleFade {
+    0% { transform: scale(1) rotate(0deg); opacity: 1; }
+    100% { transform: scale(0) rotate(180deg) translateY(-30px); opacity: 0; }
+  }
+
+  /* Top section */
+  .top-section {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 30px 20px 10px;
+  }
+
+  .headline {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    color: #fff;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.3), 0 0 40px rgba(255,255,255,0.3);
+    margin-bottom: 8px;
+  }
+
+  .subtext {
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+    color: rgba(255,255,255,0.9);
+    font-weight: 300;
+    margin-bottom: 12px;
+  }
+
+  .names {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .names .heart-icon {
+    color: #ff2d55;
+    animation: heartPulse 1s ease-in-out infinite;
+    font-size: 1.5em;
+  }
+
+  @keyframes heartPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+  }
+
+  /* 8 Ball */
+  .ball-section {
+    position: relative;
+    z-index: 1;
+    margin: 20px 0;
+  }
+
+  .eight-ball-wrapper {
+    position: relative;
+    width: clamp(260px, 50vw, 340px);
+    height: clamp(260px, 50vw, 340px);
+    cursor: grab;
+  }
+
+  .eight-ball-wrapper:active { cursor: grabbing; }
+
+  .eight-ball {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #555, #111 50%, #000 80%);
+    box-shadow:
+      inset -20px -20px 40px rgba(0,0,0,0.8),
+      inset 10px 10px 30px rgba(255,255,255,0.1),
+      0 15px 50px rgba(0,0,0,0.5),
+      0 0 80px rgba(255,107,129,0.3);
+    position: relative;
+    transition: transform 0.1s ease;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .eight-ball:hover {
+    animation: jiggle 0.4s ease infinite;
+  }
+
+  .eight-ball.shaking {
+    animation: shake 0.6s ease;
+  }
+
+  .eight-ball.shaking:hover {
+    animation: shake 0.6s ease;
+  }
+
+  @keyframes jiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(2deg); }
+    75% { transform: rotate(-2deg); }
+  }
+
+  @keyframes shake {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    10% { transform: translate(-15px, -10px) rotate(-8deg); }
+    20% { transform: translate(15px, 5px) rotate(8deg); }
+    30% { transform: translate(-10px, -15px) rotate(-5deg); }
+    40% { transform: translate(10px, 10px) rotate(5deg); }
+    50% { transform: translate(-5px, -5px) rotate(-3deg); }
+    60% { transform: translate(5px, 5px) rotate(3deg); }
+    70% { transform: translate(-3px, -3px) rotate(-2deg); }
+    80% { transform: translate(3px, 3px) rotate(2deg); }
+    90% { transform: translate(-1px, -1px) rotate(-1deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+  }
+
+  /* Triangle window */
+  .window-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 55%;
+    height: 55%;
+  }
+
+  .triangle-window {
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, #1a1a4e, #0d0d2b);
+    clip-path: polygon(50% 10%, 10% 85%, 90% 85%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25% 15% 10%;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 0 30px rgba(138, 43, 226, 0.4);
+  }
+
+  .triangle-window::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: radial-gradient(circle, rgba(138,43,226,0.15), transparent 70%);
+    animation: windowGlow 3s ease-in-out infinite;
+  }
+
+  @keyframes windowGlow {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  .window-content {
+    text-align: center;
+    color: #fff;
+    font-size: clamp(0.7rem, 1.8vw, 0.95rem);
+    z-index: 1;
+    width: 100%;
+    transition: opacity 0.3s ease;
+  }
+
+  .window-content.hidden { opacity: 0; }
+
+  .window-content .initial-text {
+    font-weight: 300;
+    letter-spacing: 1px;
+    text-shadow: 0 0 15px rgba(255,255,255,0.5);
+  }
+
+  .window-content .meme-img {
+    max-width: 90%;
+    max-height: 80px;
+    border-radius: 4px;
+    object-fit: contain;
+  }
+
+  .window-content .meme-text {
+    font-size: 0.65rem;
+    margin-top: 3px;
+    font-weight: 600;
+    color: #ffd700;
+    text-shadow: 0 0 8px rgba(255,215,0,0.6);
+    line-height: 1.2;
+  }
+
+  /* Big 8 circle */
+  .eight-label {
+    position: absolute;
+    top: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 50px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #111;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  }
+
+  /* Bottom section */
+  .bottom-section {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 15px 20px 30px;
+    min-height: 120px;
+  }
+
+  .meme-display {
+    display: none;
+    margin-bottom: 20px;
+    animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .meme-display.show { display: block; }
+
+  @keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .meme-display img {
+    max-width: min(90vw, 400px);
+    max-height: 300px;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3), 0 0 20px rgba(255,107,129,0.4);
+    object-fit: contain;
+  }
+
+  .meme-message {
+    margin-top: 12px;
+    font-size: clamp(1rem, 3vw, 1.4rem);
+    color: #fff;
+    font-weight: 600;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+  }
+
+  .shake-again-btn {
+    display: none;
+    margin: 15px auto;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #6c5ce7, #a855f7, #e84393);
+    background-size: 200% 200%;
+    animation: btnGradient 3s ease infinite, btnPulse 2s ease-in-out infinite;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(0.85rem, 2.5vw, 1.05rem);
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 5px 25px rgba(168,85,247,0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .shake-again-btn.show { display: inline-block; }
+
+  .shake-again-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 35px rgba(168,85,247,0.6);
+  }
+
+  @keyframes btnGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes btnPulse {
+    0%, 100% { box-shadow: 0 5px 25px rgba(168,85,247,0.4); }
+    50% { box-shadow: 0 5px 35px rgba(168,85,247,0.7), 0 0 60px rgba(232,67,147,0.3); }
+  }
+
+  /* Valentine YES button */
+  .valentine-btn {
+    display: none;
+    margin: 25px auto 10px;
+    padding: 18px 44px;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #ff6b81, #ff2d55, #e84393);
+    background-size: 200% 200%;
+    animation: btnGradient 3s ease infinite, valentinePulse 1.5s ease-in-out infinite;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 5px 30px rgba(255,45,85,0.5);
+    transition: transform 0.2s ease;
+    letter-spacing: 0.5px;
+  }
+
+  .valentine-btn.show { display: inline-block; }
+
+  .valentine-btn:hover {
+    transform: scale(1.08);
+  }
+
+  @keyframes valentinePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+  }
+
+  /* Celebration overlay */
+  .celebration {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 100;
+    background: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .celebration.show {
+    display: flex;
+    animation: fadeIn 0.5s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .celebration-text {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2rem, 8vw, 5rem);
+    color: #ffd700;
+    text-shadow: 0 0 30px rgba(255,215,0,0.5);
+    animation: celebBounce 1s ease infinite;
+    text-align: center;
+    padding: 0 20px;
+  }
+
+  .celebration-sub {
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    color: #fff;
+    margin-top: 15px;
+    animation: fadeIn 1s ease 0.5s both;
+  }
+
+  @keyframes celebBounce {
+    0%, 100% { transform: scale(1) rotate(-2deg); }
+    50% { transform: scale(1.05) rotate(2deg); }
+  }
+
+  .confetti {
+    position: fixed;
+    top: -10px;
+    z-index: 101;
+    font-size: 20px;
+    animation: confettiFall linear forwards;
+    pointer-events: none;
+  }
+
+  @keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(1080deg); opacity: 0; }
+  }
+
+  /* Audio hint */
+  .audio-hint {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    z-index: 10;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 50px;
+    padding: 8px 16px;
+    color: #fff;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .audio-hint:hover {
+    background: rgba(255,255,255,0.3);
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating Hearts Background -->
+<div class="hearts-container" id="heartsContainer"></div>
+
+<!-- Top Section -->
+<div class="top-section">
+  <h1 class="headline">Will you be my Valentine?</h1>
+  <p class="subtext">The magic 8 ball of destiny has answers...</p>
+  <div class="names">
+    <span>From Chanakya</span>
+    <span class="heart-icon">&#10084;&#65039;</span>
+    <span>To Swapnika</span>
+  </div>
+</div>
+
+<!-- 8 Ball -->
+<div class="ball-section">
+  <div class="eight-ball-wrapper" id="ballWrapper">
+    <div class="eight-ball" id="eightBall">
+      <div class="eight-label">8</div>
+      <div class="window-container">
+        <div class="triangle-window">
+          <div class="window-content" id="windowContent">
+            <div class="initial-text">&#10024; Shake the ball &#10024;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Section -->
+<div class="bottom-section">
+  <div class="meme-display" id="memeDisplay">
+    <img id="memeImage" src="" alt="Meme">
+    <div class="meme-message" id="memeMessage"></div>
+  </div>
+  <button class="shake-again-btn" id="shakeAgainBtn"></button>
+  <button class="valentine-btn" id="valentineBtn">&#128157; YES, I'LL BE YOUR VALENTINE! &#128157;</button>
+</div>
+
+<!-- Celebration -->
+<div class="celebration" id="celebration">
+  <div class="celebration-text">Yayy! Happy Valentine's Day!</div>
+  <div class="celebration-sub">Chanakya &#10084;&#65039; Swapnika Forever</div>
+</div>
+
+<!-- Sound toggle -->
+<div class="audio-hint" id="audioToggle">&#128266; Sound On</div>
+
+<script>
+  // Meme data
+  const memes = [
+    { file: 'memes/Hey Just Coming.png', text: 'Hey Just Coming' },
+    { file: 'memes/Meeki yes u cheptundi.png', text: 'Meeki yes u cheptundi' },
+    { file: 'memes/Yes cheppei dude.jpeg', text: 'Yes cheppei dude' },
+    { file: 'memes/Yes ofcourse.png', text: 'Yes ofcourse' },
+    { file: 'memes/Yes, inkem cheppagalam intakanna.jpeg', text: 'Yes, inkem cheppagalam intakanna' },
+    { file: 'memes/Yessss.png', text: 'Yessss' },
+    { file: 'memes/say yes to chanakya.jpeg', text: 'Say yes to Chanakya' },
+    { file: 'memes/yes yes.jpeg', text: 'Yes yes' },
+  ];
+
+  const shakeAgainTexts = [
+    '\u{1F52E} Shake again to rethink your destiny \u{1F52E}',
+    'Need more convincing? Shake again',
+    'The universe has more to say... shake again',
+    'Not sure yet? The ball knows more',
+    'Rethink cheyyocha? Shake again',
+    'One more shake for extra magic \u2728',
+  ];
+
+  let memeQueue = [];
+  let isAnimating = false;
+  let soundEnabled = true;
+  let shakeCount = 0;
+
+  // Shuffle array (Fisher-Yates)
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function getNextMeme() {
+    if (memeQueue.length === 0) {
+      memeQueue = shuffle(memes);
+    }
+    return memeQueue.pop();
+  }
+
+  // Sound synthesis (no external files needed)
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+  function playShakeSound() {
+    if (!soundEnabled) return;
+    try {
+      audioCtx.resume();
+      // Rattle / dice-like sound
+      for (let i = 0; i < 6; i++) {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.value = 200 + Math.random() * 400;
+        osc.type = 'triangle';
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime + i * 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + i * 0.08 + 0.08);
+        osc.start(audioCtx.currentTime + i * 0.08);
+        osc.stop(audioCtx.currentTime + i * 0.08 + 0.1);
+      }
+    } catch(e) {}
+  }
+
+  function playRevealSound() {
+    if (!soundEnabled) return;
+    try {
+      audioCtx.resume();
+      // Magical chime
+      [523, 659, 784, 1047].forEach((freq, i) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.value = freq;
+        osc.type = 'sine';
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime + i * 0.12);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + i * 0.12 + 0.5);
+        osc.start(audioCtx.currentTime + i * 0.12);
+        osc.stop(audioCtx.currentTime + i * 0.12 + 0.6);
+      });
+    } catch(e) {}
+  }
+
+  function playCelebrationSound() {
+    if (!soundEnabled) return;
+    try {
+      audioCtx.resume();
+      [523, 587, 659, 698, 784, 880, 988, 1047].forEach((freq, i) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.value = freq;
+        osc.type = 'sine';
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime + i * 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + i * 0.1 + 0.6);
+        osc.start(audioCtx.currentTime + i * 0.1);
+        osc.stop(audioCtx.currentTime + i * 0.1 + 0.7);
+      });
+    } catch(e) {}
+  }
+
+  // DOM elements
+  const eightBall = document.getElementById('eightBall');
+  const windowContent = document.getElementById('windowContent');
+  const memeDisplay = document.getElementById('memeDisplay');
+  const memeImage = document.getElementById('memeImage');
+  const memeMessage = document.getElementById('memeMessage');
+  const shakeAgainBtn = document.getElementById('shakeAgainBtn');
+  const valentineBtn = document.getElementById('valentineBtn');
+  const celebration = document.getElementById('celebration');
+  const audioToggle = document.getElementById('audioToggle');
+
+  // Shake the ball
+  function shakeBall() {
+    if (isAnimating) return;
+    isAnimating = true;
+    shakeCount++;
+
+    // Hide previous meme
+    memeDisplay.classList.remove('show');
+    shakeAgainBtn.classList.remove('show');
+    valentineBtn.classList.remove('show');
+
+    // Shake animation
+    eightBall.classList.add('shaking');
+    playShakeSound();
+
+    // Window goes dark
+    windowContent.classList.add('hidden');
+
+    setTimeout(() => {
+      eightBall.classList.remove('shaking');
+      const meme = getNextMeme();
+
+      // Show meme in window (small preview)
+      windowContent.innerHTML = `
+        <img class="meme-img" src="${meme.file}" alt="${meme.text}">
+        <div class="meme-text">${meme.text}</div>
+      `;
+      windowContent.classList.remove('hidden');
+
+      // Show meme below (big)
+      memeImage.src = meme.file;
+      memeMessage.textContent = meme.text;
+      memeDisplay.classList.add('show');
+
+      playRevealSound();
+
+      // Show buttons
+      setTimeout(() => {
+        const btnText = shakeAgainTexts[Math.floor(Math.random() * shakeAgainTexts.length)];
+        shakeAgainBtn.textContent = btnText;
+        shakeAgainBtn.classList.add('show');
+        valentineBtn.classList.add('show');
+        isAnimating = false;
+      }, 300);
+
+    }, 700);
+  }
+
+  // Click to shake
+  eightBall.addEventListener('click', shakeBall);
+
+  // Drag to shake
+  let isDragging = false;
+  let dragMoves = 0;
+  let lastX = 0, lastY = 0;
+
+  eightBall.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    dragMoves = 0;
+    lastX = e.clientX;
+    lastY = e.clientY;
+  });
+
+  eightBall.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    dragMoves = 0;
+    lastX = e.touches[0].clientX;
+    lastY = e.touches[0].clientY;
+  }, { passive: true });
+
+  function handleMove(x, y) {
+    if (!isDragging) return;
+    const dx = Math.abs(x - lastX);
+    const dy = Math.abs(y - lastY);
+    if (dx + dy > 10) {
+      dragMoves++;
+      lastX = x;
+      lastY = y;
+      // Visual feedback while dragging
+      const rx = (Math.random() - 0.5) * 8;
+      const ry = (Math.random() - 0.5) * 8;
+      eightBall.style.transform = `translate(${rx}px, ${ry}px) rotate(${rx}deg)`;
+    }
+    if (dragMoves >= 5) {
+      isDragging = false;
+      dragMoves = 0;
+      eightBall.style.transform = '';
+      shakeBall();
+    }
+  }
+
+  document.addEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
+  document.addEventListener('touchmove', (e) => handleMove(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+  document.addEventListener('mouseup', () => { isDragging = false; eightBall.style.transform = ''; });
+  document.addEventListener('touchend', () => { isDragging = false; eightBall.style.transform = ''; });
+
+  // Shake again button
+  shakeAgainBtn.addEventListener('click', shakeBall);
+
+  // Valentine YES button
+  valentineBtn.addEventListener('click', () => {
+    celebration.classList.add('show');
+    playCelebrationSound();
+    launchConfetti();
+  });
+
+  // Close celebration on click
+  celebration.addEventListener('click', () => {
+    celebration.classList.remove('show');
+  });
+
+  // Confetti
+  function launchConfetti() {
+    const emojis = ['\u2764\uFE0F', '\u{1F496}', '\u{1F495}', '\u2728', '\u{1F389}', '\u{1F388}', '\u{1F49D}', '\u{1F31F}', '\u{1F339}'];
+    for (let i = 0; i < 60; i++) {
+      setTimeout(() => {
+        const el = document.createElement('div');
+        el.className = 'confetti';
+        el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.fontSize = (14 + Math.random() * 20) + 'px';
+        el.style.animationDuration = (2 + Math.random() * 3) + 's';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 5000);
+      }, i * 50);
+    }
+  }
+
+  // Floating hearts
+  function createFloatingHearts() {
+    const container = document.getElementById('heartsContainer');
+    const heartChars = ['\u2764\uFE0F', '\u{1F497}', '\u{1F496}', '\u{1F495}', '\u{1F49C}', '\u{1F9E1}'];
+    setInterval(() => {
+      const heart = document.createElement('div');
+      heart.className = 'floating-heart';
+      heart.textContent = heartChars[Math.floor(Math.random() * heartChars.length)];
+      heart.style.left = Math.random() * 100 + '%';
+      heart.style.fontSize = (12 + Math.random() * 22) + 'px';
+      heart.style.animationDuration = (6 + Math.random() * 8) + 's';
+      container.appendChild(heart);
+      setTimeout(() => heart.remove(), 14000);
+    }, 500);
+  }
+  createFloatingHearts();
+
+  // Sparkle cursor trail
+  document.addEventListener('mousemove', (() => {
+    let last = 0;
+    return (e) => {
+      const now = Date.now();
+      if (now - last < 80) return;
+      last = now;
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle';
+      sparkle.textContent = ['\u2728', '\u{1F496}', '\u2B50'][Math.floor(Math.random() * 3)];
+      sparkle.style.left = e.clientX + 'px';
+      sparkle.style.top = e.clientY + 'px';
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 800);
+    };
+  })());
+
+  // Sound toggle
+  audioToggle.addEventListener('click', () => {
+    soundEnabled = !soundEnabled;
+    audioToggle.textContent = soundEnabled ? '\u{1F50A} Sound On' : '\u{1F507} Sound Off';
+  });
+</script>
+</body>
+</html>
